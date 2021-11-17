@@ -1,0 +1,52 @@
+name: build-libs
+on: [push] 
+jobs:
+  Build-lwjgl-backports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取源代码，配置工作区
+        run: |
+             git clone https://github.com/huangguiniab/lwjgl
+             git clone https://github.com/huangguiniab/lwjgl-backports
+      - name: 安装必要依赖，准备环境
+        run: |
+             sudo apt update
+             sudo apt install debian-archive-keyring qemu qemu-user-static binfmt-support debootstrap systemd-container -y
+      - name: 开始构建操作环境
+        run: |
+             sudo debootstrap --arch arm64 buster arm64/
+             sudo debootstrap --arch armhf buster armhf/
+      - name: 配置操作环境
+        run: |
+             sudo cp -r lwjgl-backports/build_script/*.sh arm64/
+             sudo cp -r lwjgl-backports/build_script/*.sh armhf/
+             sudo cp lwjgl-backports/patch/build-aarch64.xml arm64/build.xml
+             sudo cp lwjgl-backports/patch/build-aarch32.xml armhf/build.xml
+      - name: ARM64:准备操作环境
+        run: sudo systemd-nspawn -D arm64/ bash /01-setup.sh
+      - name: ARM64:开始编译
+        run: sudo systemd-nspawn -D arm64/ bash /02-build.sh
+      - name: ARMHF:准备操作环境
+        run: sudo systemd-nspawn -D armhf/ bash /01-setup.sh
+      - name: ARMHF:开始编译
+        run: sudo systemd-nspawn -D armhf/ bash /02-build.sh
+      - name: 整理文件
+        run: |
+             sudo mkdir dist
+             sudo mv arm64/lwjgl/dist/lwjgl_platform.jar arm64/lwjgl/dist/lwjgl_platform_arm64.jar
+             sudo mv arm64/lwjgl'dist/liblwjgl64.so arm64/lwjgl'dist/liblwjgl_arm64.so
+             sudo rm arm64/lwjgl/dist/liblwjgl.so
+             sudo cp arm64/lwjgl/dist/* dist/
+             sudo cp armhf/lwjgl/dist/liblwjgl.so dist/liblwjgl_armhf.so
+      - name: 获取当前发行版本号
+        run: |
+             echo $(cat lwjgl-backports/RELEASE) >> $GITHUB_ENV
+             cd ..
+      - name: 发布Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ env.ReleaseVersion }}
+          title: ${{ env.ReleaseVersion }}
+          prerelease: false
+          files: dist/*
