@@ -22,6 +22,8 @@ jobs:
              sudo cp -r lwjgl-backports/build_script/*.sh armhf/
              sudo cp lwjgl-backports/patch/build-aarch64.xml arm64/build.xml
              sudo cp lwjgl-backports/patch/build-aarch32.xml armhf/build.xml
+             sudo cp -r lwjgl/ arm64/
+             sudo cp -r lwjgl/ armhf/
       - name: ARM64:准备操作环境
         run: sudo systemd-nspawn -D arm64/ bash /01-setup.sh
       - name: ARM64:开始编译
