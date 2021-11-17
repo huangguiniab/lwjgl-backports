@@ -36,7 +36,7 @@ jobs:
         run: |
              sudo mkdir dist
              sudo mv arm64/lwjgl/dist/lwjgl_platform.jar arm64/lwjgl/dist/lwjgl_platform_arm64.jar
-             sudo mv arm64/lwjgl'dist/liblwjgl64.so arm64/lwjgl'dist/liblwjgl_arm64.so
+             sudo mv arm64/lwjgl/dist/liblwjgl64.so arm64/lwjgl/dist/liblwjgl_arm64.so
              sudo rm arm64/lwjgl/dist/liblwjgl.so
              sudo cp arm64/lwjgl/dist/* dist/
              sudo cp armhf/lwjgl/dist/liblwjgl.so dist/liblwjgl_armhf.so
