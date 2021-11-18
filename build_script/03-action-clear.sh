@@ -18,7 +18,7 @@ sudo mv arm64/lwjgl/dist/lwjgl_platform.jar arm64/lwjgl/dist/lwjgl_platform_arm6
 
 sudo cp arm64/lwjgl/dist/liblwjgl_arm64.so dist/
 sudo cp arm64/lwjgl/dist/libopenal_arm64.so dist/
-sudo cp arm64/lwjgl/dist/lwjgl_platform_arm64.jar /dist
+sudo cp arm64/lwjgl/dist/lwjgl_platform_arm64.jar dist/
 
 #armhf
 sudo mv armhf/lwjgl/dist/liblwjgl.so armhf/lwjgl/dist/liblwjgl_armhf.so
