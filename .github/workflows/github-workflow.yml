@@ -17,13 +17,7 @@ jobs:
              sudo debootstrap --arch arm64 buster arm64/
              sudo debootstrap --arch armhf buster armhf/
       - name: 配置操作环境
-        run: |
-             sudo cp -r lwjgl-backports/build_script/*.sh arm64/
-             sudo cp -r lwjgl-backports/build_script/*.sh armhf/
-             sudo cp lwjgl-backports/patch/build-aarch64.xml arm64/build.xml
-             sudo cp lwjgl-backports/patch/build-aarch32.xml armhf/build.xml
-             sudo cp -r lwjgl/ arm64/
-             sudo cp -r lwjgl/ armhf/
+        run: sudo bash lwjgl-backports/build_script/00-action-setup.sh
       - name: ARM64:准备操作环境
         run: sudo systemd-nspawn -D arm64/ bash /01-setup.sh
       - name: ARM64:开始编译
@@ -33,13 +27,7 @@ jobs:
       - name: ARMHF:开始编译
         run: sudo systemd-nspawn -D armhf/ bash /02-build.sh
       - name: 整理文件
-        run: |
-             sudo mkdir dist
-             sudo mv arm64/lwjgl/dist/lwjgl_platform.jar arm64/lwjgl/dist/lwjgl_platform_arm64.jar
-             sudo mv arm64/lwjgl/dist/liblwjgl64.so arm64/lwjgl/dist/liblwjgl_arm64.so
-             sudo rm arm64/lwjgl/dist/liblwjgl.so
-             sudo cp arm64/lwjgl/dist/* dist/
-             sudo cp armhf/lwjgl/dist/liblwjgl.so dist/liblwjgl_armhf.so
+        run: sudo bash lwjgl-backports/build_script/03-action-clear.sh
       - name: 获取当前发行版本号
         run: |
              echo $(cat lwjgl-backports/RELEASE) >> $GITHUB_ENV
