@@ -1,6 +1,7 @@
 #!/bin/bash
 set -o errexit
 set -o nounset
+set -x
 	apt update
 	apt install gnupg wget apt-transport-https libx11-dev libxxf86vm-dev libxt-dev libxcursor-dev libxrandr-dev -y
 	wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -

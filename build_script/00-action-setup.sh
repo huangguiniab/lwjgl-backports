@@ -1,6 +1,7 @@
 #!/bin/bash
 set -o errexit
 set -o nounset
+set -x
 
 #复制构建脚本到操作环境
 sudo cp -r lwjgl-backports/build_script/*.sh arm64/ 
@@ -15,7 +16,9 @@ sudo cp -r lwjgl/ arm64/
 sudo cp -r lwjgl/ armhf/
 
 #下载OPENAL到操作环境
+mkdir arm64/lwjgl/dist
 wget -O arm64/lwjgl/dist/libopenal.so https://build.lwjgl.org/stable/linux/arm64/libopenal.so
 wget -O arm64/lwjgl/dist/libopenal64.so https://build.lwjgl.org/stable/linux/arm64/libopenal.so
+mkdir armhf/lwjgl/dist
 wget -O armhf/lwjgl/dist/libopenal.so https://build.lwjgl.org/stable/linux/arm32/libopenal.so
 wget -O armhf/lwjgl/dist/libopenal64.so https://build.lwjgl.org/stable/linux/arm32/libopenal.so

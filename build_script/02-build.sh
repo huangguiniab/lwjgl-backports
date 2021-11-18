@@ -1,6 +1,7 @@
 #!/bin/bash
 set -o errexit
 set -o nounset
+set -x
 cd /lwjgl
 rm platform_build/linux_ant/build.xml
 cp /build.xml platform_build/linux_ant/build.xml

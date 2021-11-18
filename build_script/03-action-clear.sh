@@ -1,6 +1,7 @@
 #!/bin/bash
 set -o errexit
 set -o nounset
+set -x
 
 #从arm64复制所有纯java库
 sudo mkdir dist
